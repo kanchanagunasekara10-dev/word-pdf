@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SwiftPDF — Word to PDF Converter</title>
+<meta name="description" content="Convert Word documents to PDF in your browser. Batch conversion, no upload, no sign-up, completely private.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230e9f6e'/><path d='M10 7h8l5 5v13H10z' fill='white'/><path d='m13.5 17.5 2.5 2.5 4-4.5' stroke='%230e9f6e' stroke-width='2.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Public+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<header class="topbar">
+  <a class="brand" href="./" aria-label="SwiftPDF home">
+    <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+      <path d="M7 5a2 2 0 0 1 2-2h10l7 7v17a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z"
+            fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+      <path d="M19 3v7h7" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" fill="none"/>
+      <path d="m12 19 3.5 3.5L21 17" stroke="currentColor" stroke-width="2.6"
+            stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+    <span class="brand-name">Swift<strong>PDF</strong></span>
+  </a>
+  <nav class="topnav">
+    <a href="#how">How it works</a>
+    <a href="#privacy">Privacy</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ============ SCREEN 1 — SELECT ============ -->
+  <section class="screen screen-select" id="screenSelect">
+    <p class="kicker">Word to PDF</p>
+    <h1>Turn Word documents into PDFs</h1>
+    <p class="sub">
+      Drop in as many <code>.docx</code> files as you like and get clean, A4-ready PDFs back.
+      Everything runs inside your browser — your documents are never uploaded.
+    </p>
+
+    <button type="button" class="cta cta-lg" id="selectBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>
+      </svg>
+      Select WORD files
+    </button>
+    <p class="drop-hint">or drop them anywhere on this page</p>
+
+    <ul class="badges">
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Nothing leaves your device
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h8l-1 8 10-12h-8z"/></svg>
+        Batch conversion
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+        Free, no sign-up
+      </li>
+    </ul>
+  </section>
+
+  <!-- ============ SCREEN 2 — FILES + OPTIONS ============ -->
+  <section class="screen screen-files" id="screenFiles" hidden>
+    <div class="workspace">
+
+      <div class="files-col">
+        <div class="files-head">
+          <h2 id="filesTitle">1 file selected</h2>
+          <button type="button" class="link-btn" id="clearAllBtn">Remove all</button>
+        </div>
+        <ul class="filegrid" id="fileGrid"></ul>
+      </div>
+
+      <aside class="panel" aria-labelledby="panelTitle">
+        <h2 class="panel-title" id="panelTitle">Word to PDF options</h2>
+
+        <div class="field">
+          <label for="pageSize">Page size</label>
+          <select id="pageSize">
+            <option value="a4" selected>A4 (210 × 297 mm)</option>
+            <option value="letter">Letter (8.5 × 11 in)</option>
+            <option value="a3">A3 (297 × 420 mm)</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <span class="field-label">Orientation</span>
+          <div class="segmented" role="radiogroup" aria-label="Orientation">
+            <label><input type="radio" name="orientation" value="portrait" checked><span>Portrait</span></label>
+            <label><input type="radio" name="orientation" value="landscape"><span>Landscape</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="field-label">Margins</span>
+          <div class="segmented" role="radiogroup" aria-label="Margins">
+            <label><input type="radio" name="margin" value="10"><span>Narrow</span></label>
+            <label><input type="radio" name="margin" value="15" checked><span>Normal</span></label>
+            <label><input type="radio" name="margin" value="25"><span>Wide</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="quality">Quality</label>
+          <select id="quality">
+            <option value="1.5">Standard — smallest file</option>
+            <option value="2" selected>High — recommended</option>
+            <option value="3">Maximum — large file, slower</option>
+          </select>
+        </div>
+
+        <button type="button" class="cta cta-block" id="convertBtn">
+          Convert to PDF
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+        </button>
+        <p class="panel-note" id="panelNote">Converted on your device. Nothing is uploaded.</p>
+      </aside>
+
+    </div>
+  </section>
+
+  <!-- ============ SCREEN 3 — WORKING ============ -->
+  <section class="screen screen-progress" id="screenProgress" hidden aria-live="polite">
+    <div class="loader" aria-hidden="true"><span></span><span></span><span></span></div>
+    <h2 id="progressTitle">Converting your files…</h2>
+    <p class="progress-file" id="progressFile">&nbsp;</p>
+    <div class="progressbar"><div class="progressbar-fill" id="progressFill"></div></div>
+    <p class="progress-count" id="progressCount">0 of 0</p>
+  </section>
+
+  <!-- ============ SCREEN 4 — DONE ============ -->
+  <section class="screen screen-done" id="screenDone" hidden>
+    <div class="done-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+    </div>
+    <h2 id="doneTitle">Your PDF is ready</h2>
+    <p class="sub" id="doneSub">Converted entirely on your device.</p>
+
+    <button type="button" class="cta cta-lg" id="downloadAllBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 4v12"/><path d="m7 11 5 5 5-5"/><path d="M4 20h16"/>
+      </svg>
+      <span id="downloadAllLabel">Download PDF</span>
+    </button>
+
+    <ul class="results" id="resultList"></ul>
+
+    <button type="button" class="link-btn restart" id="restartBtn">Convert more files</button>
+  </section>
+
+</main>
+
+<!-- ============ INFO SECTIONS ============ -->
+<div class="info" id="infoSections">
+  <section class="info-block" id="how">
+    <h2>How it works</h2>
+    <ol class="steps">
+      <li><strong>Pick your files.</strong> Drop one or a hundred <code>.docx</code> documents onto the page.</li>
+      <li><strong>Choose your page setup.</strong> Size, orientation and margins, applied to every file in the batch.</li>
+      <li><strong>Convert.</strong> Each document is read with mammoth.js, laid out as HTML, then printed to PDF with html2pdf.js.</li>
+      <li><strong>Download.</strong> One PDF, or the whole batch as a ZIP.</li>
+    </ol>
+  </section>
+
+  <section class="info-block" id="privacy">
+    <h2>Why this is private</h2>
+    <p>
+      Most online converters upload your document to a server, convert it there, and hand you a link.
+      SwiftPDF has no server. The conversion code runs in your browser, your file is read from disk into
+      memory, and the finished PDF is written straight back to your downloads folder. Nothing is
+      transmitted, logged, or stored — you can watch the network tab and confirm it, or disconnect from
+      the internet after the page loads and it will still work.
+    </p>
+  </section>
+
+  <section class="info-block" id="faq">
+    <h2>FAQ</h2>
+    <dl class="faq">
+      <dt>Can I convert old <code>.doc</code> files?</dt>
+      <dd>No — only <code>.docx</code>. Open the file in Word and use <em>Save As → .docx</em> first.</dd>
+
+      <dt>How many files can I convert at once?</dt>
+      <dd>There is no fixed limit. They are converted one at a time so your browser stays responsive; a large batch simply takes longer.</dd>
+
+      <dt>Will the PDF look exactly like Word?</dt>
+      <dd>Close, but not pixel-identical. Headings, bold and italic text, lists, tables, links and images all carry over. Word's headers, footers and page numbers do not.</dd>
+
+      <dt>Can I select text in the resulting PDF?</dt>
+      <dd>No. Each page is rendered as a high-resolution image, which is what keeps the layout faithful. If you need selectable text, a server-side converter such as LibreOffice is the better tool.</dd>
+
+      <dt>Is there a file size limit?</dt>
+      <dd>Files up to 25 MB each. The real limit is your device's memory.</dd>
+    </dl>
+  </section>
+</div>
+
+<footer class="site-foot">
+  <p>
+    <strong>SwiftPDF</strong> — a static, private Word to PDF converter.
+    Built with <a href="https://github.com/mwilliamson/mammoth.js" target="_blank" rel="noopener">mammoth.js</a>,
+    <a href="https://github.com/eKoopmans/html2pdf.js" target="_blank" rel="noopener">html2pdf.js</a> and
+    <a href="https://github.com/Stuk/jszip" target="_blank" rel="noopener">JSZip</a>.
+  </p>
+</footer>
+
+<!-- ============ DRAG OVERLAY ============ -->
+<div class="dropveil" id="dropVeil" hidden aria-hidden="true">
+  <div class="dropveil-inner">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+    <p>Drop your Word files</p>
+  </div>
+</div>
+
+<!-- ============ PREVIEW MODAL ============ -->
+<div class="modal" id="previewModal" hidden>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-head">
+      <h2 id="modalTitle">Preview</h2>
+      <button type="button" class="icon-btn" id="modalClose" aria-label="Close preview">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="modal-body"><div class="paper"><div class="docview" id="modalBody"></div></div></div>
+  </div>
+</div>
+
+<!-- Off-screen render stage: this is what html2pdf actually captures. -->
+<div class="stage" id="stage" aria-hidden="true"><div class="docview" id="stagePaper"></div></div>
+
+<!-- Live region for screen readers -->
+<p class="sr-only" role="status" aria-live="polite" id="srStatus"></p>
+
+<input type="file" id="fileInput" class="sr-only" multiple
+       accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+
+<script src="https://cdn.jsdelivr.net/npm/mammoth@1.9.0/mammoth.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.3/dist/html2pdf.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

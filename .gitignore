@@ -1,0 +1,19 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Node (the site itself needs none — only if you add tooling later)
+node_modules/
+npm-debug.log*
+package-lock.json
+
+# Local scratch / test output
+*.pdf
+*.zip
+!docs/**
